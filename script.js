@@ -8,7 +8,7 @@ const PAGE_ALIASES = {
   // Alias untuk Menu Daftar Juz (File asli: quran-embed.html)
   'menu': 'quran-embed',       
   'daftar-juz': 'quran-embed', 
-  'alquran': 'quran-embed',     // <-- INI KUNCINYA (Fix tombol di baca-quran.html)
+  'alquran': 'quran-embed',     
   'list': 'quran-embed',       
   'kembali': 'quran-embed',
   
@@ -31,10 +31,7 @@ async function loadPage(page, addToHistory = true) {
   const app = document.getElementById("app");
 
   // 0. BERSIHKAN URL (Hapus tanda # atau parameter ?)
-  // Pastikan page adalah string sebelum replace
   page = page ? String(page).replace('#', '').split('?')[0] : 'home';
-
-  // Fallback jika page kosong setelah dibersihkan
   if (!page) page = "home";
 
   // CEK ALIAS (SMART REDIRECT)
@@ -44,9 +41,7 @@ async function loadPage(page, addToHistory = true) {
   }
 
   // === PENGAMAN BARU: RESET MEMORI JUZ SAAT DI MENU ===
-  // Jika user masuk ke 'quran-embed' (daftar juz), hapus memori juz terakhir
   if (page === 'quran-embed') {
-      console.log("[System] Masuk Menu Daftar Juz: Reset memori.");
       localStorage.removeItem("activeJuz"); 
   }
 
@@ -62,28 +57,36 @@ async function loadPage(page, addToHistory = true) {
     </div>`;
 
   try {
-    // 2. Fetch konten halaman
-    // LOGIKA PATH: Jika page mengandung "nabi/", kita asumsikan file ada di folder "nabi/"
-    // Jika struktur folder Anda adalah: root/pages/nabi/adam.html, maka fetch('pages/' + page + '.html') sudah benar.
-    // Tetapi jika struktur Anda flat (semua di folder pages), kita perlu berhati-hati.
-    // Script ini mengasumsikan file ada di `pages/{namafile}.html` atau `pages/nabi/{namafile}.html` sesuai input.
+    // 2. Fetch konten halaman (Logika Pencarian File Cerdas untuk GitHub Pages)
+    let response;
     
-    let fetchPath = `pages/${page}.html`;
+    // STRATEGI 1: Cari sesuai path persis yang diminta (misal: pages/nabi/adam.html)
+    // Kita gunakan path relatif './' agar aman di GitHub Pages sub-folder
+    let path1 = `./pages/${page}.html`; 
     
-    // Opsional: Jika Anda menaruh file nabi di root pages tapi panggilannya nabi/adam
-    // const cleanPageName = page.split('/').pop(); // Ambil 'adam' dari 'nabi/adam'
-    // fetchPath = `pages/${cleanPageName}.html`; // Jadi pages/adam.html
+    try {
+        response = await fetch(path1);
+    } catch (err) {
+        console.warn(`[System] Gagal fetch path1: ${path1}`);
+    }
 
-    const response = await fetch(fetchPath);
+    // STRATEGI 2: Jika gagal, dan request mengandung 'nabi/', coba cari file flat di pages/ 
+    // (Jaga-jaga kalau kamu lupa bikin folder 'nabi' dan semua file numpuk di 'pages')
+    if ((!response || !response.ok) && page.includes('nabi/')) {
+        let cleanName = page.split('/').pop(); // ambil 'adam' dari 'nabi/adam'
+        let path2 = `./pages/${cleanName}.html`;
+        console.warn(`[System] Gagal di '${path1}', mencoba fallback ke '${path2}'...`);
+        response = await fetch(path2);
+    }
 
-    if (!response.ok) {
-      throw new Error(`File '${fetchPath}' tidak ditemukan (${response.status})`);
+    if (!response || !response.ok) {
+      throw new Error(`Halaman '${page}' tidak ditemukan. Pastikan file ada di folder 'pages/' atau 'pages/nabi/'.`);
     }
 
     const html = await response.text();
     app.innerHTML = html;
 
-    // 2.5. EKSEKUSI SCRIPT DALAM HTML (Jika ada script khusus di file yang di-load)
+    // 2.5. EKSEKUSI SCRIPT DALAM HTML
     const scripts = app.querySelectorAll("script");
     scripts.forEach((oldScript) => {
       const newScript = document.createElement("script");
@@ -94,34 +97,29 @@ async function loadPage(page, addToHistory = true) {
       oldScript.parentNode.replaceChild(newScript, oldScript);
     });
 
-    // 3. LOGIKA ANIMASI (Updated: Menambahkan selector 'a.flex' dan '.grid > div' untuk tombol & stats nabi)
+    // 3. LOGIKA ANIMASI
     const elementsToAnimate = app.querySelectorAll(
       "h1, h2, h3, p, .group, a.inline-flex, a.flex, .relative.z-10 > span, .grid > div"
     );
     elementsToAnimate.forEach((el, index) => {
       el.classList.add("reveal-up");
-      // Delay bertingkat agar muncul satu per satu
       el.style.animationDelay = `${index * 50}ms`;
     });
 
-    // 4. Scroll ke atas otomatis setiap ganti halaman
+    // 4. Scroll ke atas
     window.scrollTo(0, 0);
 
-    // 5. HISTORY API (Agar tombol back browser berfungsi)
+    // 5. HISTORY API
     if (addToHistory) {
       history.pushState({ pageId: page }, null, `#${page}`);
     }
 
     // 6. AUTO LOAD DATA QURAN
-    // Jalan hanya jika halaman 'baca-quran' yang dimuat
     if (page === "baca-quran") {
       const activeJuz = localStorage.getItem("activeJuz");
-      console.log(`[System] Mode Baca Aktif. Juz: ${activeJuz}`);
-      
       if (activeJuz) {
         fetchJuzData(activeJuz);
       } else {
-        console.warn("[System] Error: Tidak ada Juz aktif, kembali ke menu.");
         loadPage(MAIN_MENU_PAGE);
       }
     }
@@ -133,7 +131,7 @@ async function loadPage(page, addToHistory = true) {
             <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
         </div>
         <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">Halaman Tidak Ditemukan</h2>
-        <p class="text-sm text-gray-500 mb-6 max-w-md mx-auto font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">${error.message}</p>
+        <p class="text-sm text-gray-500 mb-6 max-w-md mx-auto font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">System Error: ${error.message}</p>
         
         <div class="flex gap-3">
             <button onclick="loadPage('${MAIN_MENU_PAGE}')" class="px-6 py-2 bg-brand text-white rounded-full hover:bg-brand-dark transition shadow-lg">
@@ -155,7 +153,6 @@ function goBack() {
     let hash = location.hash.substring(1);
     let currentPage = hash.split('?')[0];
 
-    // Jika sedang di halaman baca, tombol kembali WAJIB ke quran-embed
     if (currentPage === 'baca-quran') {
         loadPage(MAIN_MENU_PAGE); 
         return;
@@ -173,10 +170,7 @@ function goBack() {
 // ===========================================
 
 async function bukaJuz(nomor) {
-  console.log(`[System] User memilih Juz ${nomor}`);
   localStorage.setItem("activeJuz", nomor);
-  
-  // Panggil file bacaan yang benar: 'baca-quran'
   await loadPage("baca-quran");
 }
 
@@ -285,17 +279,14 @@ if (themeToggleBtn) {
   });
 }
 
-// Navigasi Browser Back/Forward
 window.onpopstate = function (event) {
   if (event.state && event.state.pageId) {
     loadPage(event.state.pageId, false);
   } else {
-    // Kalau state kosong, default ke home
     loadPage("home", false);
   }
 };
 
-// Initial Load
 window.addEventListener("DOMContentLoaded", () => {
   let page = location.hash.substring(1);
   if (page) {
