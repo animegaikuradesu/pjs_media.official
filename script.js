@@ -3,90 +3,96 @@
 // + QURAN READER SYSTEM (MUSHAF STYLE)
 // =======================================================
 
-// KONFIGURASI NAMA HALAMAN (DISESUAIKAN DENGAN FILE KAMU)
+// KONFIGURASI NAMA HALAMAN
 const PAGE_ALIASES = {
-  // Alias untuk Menu Daftar Juz (File asli: quran-embed.html)
   'menu': 'quran-embed',       
   'daftar-juz': 'quran-embed', 
   'alquran': 'quran-embed',     
   'list': 'quran-embed',       
   'kembali': 'quran-embed',
-  
-  // Alias untuk Halaman Baca (File asli: baca-quran.html)
   'reader': 'baca-quran',
   'quran-embed-view': 'baca-quran',
-
-  // Alias untuk Menu Kisah Nabi
   'nabi': 'kisah-nabi',
   'kisah': 'kisah-nabi',
-
-  // Lainnya
   'index': 'home'
 };
 
-// Default halaman menu utama (Daftar Juz)
 const MAIN_MENU_PAGE = 'quran-embed'; 
 
-async function loadPage(page, addToHistory = true) {
+async function loadPage(pageInput, addToHistory = true) {
   const app = document.getElementById("app");
 
-  // 0. BERSIHKAN URL (Hapus tanda # atau parameter ?)
-  page = page ? String(page).replace('#', '').split('?')[0] : 'home';
+  // 1. BERSIHKAN & NORMALISASI URL
+  // Ubah ke huruf kecil semua biar ga error di GitHub (Case Insensitive force)
+  let page = pageInput ? String(pageInput).replace('#', '').split('?')[0].toLowerCase() : 'home';
   if (!page) page = "home";
 
-  // CEK ALIAS (SMART REDIRECT)
+  // 2. CEK ALIAS
   if (PAGE_ALIASES[page]) {
     console.log(`[System] Redirecting alias '${page}' ke '${PAGE_ALIASES[page]}'`);
     page = PAGE_ALIASES[page];
   }
 
-  // === PENGAMAN BARU: RESET MEMORI JUZ SAAT DI MENU ===
+  // === PENGAMAN: RESET MEMORI JUZ SAAT DI MENU ===
   if (page === 'quran-embed') {
       localStorage.removeItem("activeJuz"); 
   }
 
-  console.log(`[System] Sedang memuat halaman: ${page}`); 
+  console.log(`[System] Mencoba memuat: ${page}`); 
 
-  // 1. Tampilkan loading spinner
+  // 3. TAMPILKAN LOADING
   app.innerHTML = `
     <div class="h-[80vh] flex items-center justify-center">
         <div class="flex flex-col items-center gap-5">
           <div class="w-16 h-16 border-[6px] border-brand/30 border-t-brand rounded-full animate-spin"></div>
-          <p class="text-base text-brand-dark dark:text-brand font-serif italic tracking-wider animate-pulse">Memuat Halaman...</p>
+          <p class="text-base text-brand-dark dark:text-brand font-serif italic tracking-wider animate-pulse">Sedang Mencari Halaman...</p>
         </div>
     </div>`;
 
   try {
-    // 2. Fetch konten halaman (Logika Pencarian File Cerdas untuk GitHub Pages)
+    // ============================================================
+    // LOGIKA PENCARIAN FILE PINTAR (SMART FETCH)
+    // ============================================================
+    
+    // Ambil nama file asli tanpa folder (misal: 'nabi/adam' jadi 'adam')
+    const fileNameOnly = page.split('/').pop(); 
+    
+    // Daftar kemungkinan lokasi file (Prioritas 1 -> 2 -> 3)
+    // Timestamp (?v=...) ditambahkan biar browser gak pake cache lama
+    const timestamp = new Date().getTime(); 
+    
+    const candidates = [
+        `./pages/${page}.html`,                  // 1. Path persis sesuai request (ex: pages/nabi/adam.html)
+        `./pages/${fileNameOnly}.html`,          // 2. Coba cari langsung di folder pages/ (ex: pages/adam.html)
+        `./pages/nabi/${fileNameOnly}.html`      // 3. Coba paksa cari di folder nabi/ (ex: pages/nabi/adam.html)
+    ];
+
     let response;
-    
-    // STRATEGI 1: Cari sesuai path persis yang diminta (misal: pages/nabi/adam.html)
-    // Kita gunakan path relatif './' agar aman di GitHub Pages sub-folder
-    let path1 = `./pages/${page}.html`; 
-    
-    try {
-        response = await fetch(path1);
-    } catch (err) {
-        console.warn(`[System] Gagal fetch path1: ${path1}`);
+    let foundPath = null;
+
+    // Loop untuk mencoba semua kemungkinan path
+    for (let path of candidates) {
+        try {
+            // console.log(`[System] Checking path: ${path}`); // Debugging
+            const res = await fetch(`${path}?v=${timestamp}`);
+            if (res.ok) {
+                response = res;
+                foundPath = path;
+                console.log(`[System] Ketemu di: ${path}`);
+                break; // Berhenti kalau file ketemu
+            }
+        } catch (e) { /* Lanjut ke path berikutnya */ }
     }
 
-    // STRATEGI 2: Jika gagal, dan request mengandung 'nabi/', coba cari file flat di pages/ 
-    // (Jaga-jaga kalau kamu lupa bikin folder 'nabi' dan semua file numpuk di 'pages')
-    if ((!response || !response.ok) && page.includes('nabi/')) {
-        let cleanName = page.split('/').pop(); // ambil 'adam' dari 'nabi/adam'
-        let path2 = `./pages/${cleanName}.html`;
-        console.warn(`[System] Gagal di '${path1}', mencoba fallback ke '${path2}'...`);
-        response = await fetch(path2);
-    }
-
+    // Jika setelah dicari kemana-mana tetap ga ketemu
     if (!response || !response.ok) {
-      throw new Error(`Halaman '${page}' tidak ditemukan. Pastikan file ada di folder 'pages/' atau 'pages/nabi/'.`);
+      throw new Error(`File tidak ditemukan. Sistem sudah mencari di:\n- ${candidates.join('\n- ')}`);
     }
 
     const html = await response.text();
     app.innerHTML = html;
 
-    // 2.5. EKSEKUSI SCRIPT DALAM HTML
+    // 4. EKSEKUSI SCRIPT DALAM HTML
     const scripts = app.querySelectorAll("script");
     scripts.forEach((oldScript) => {
       const newScript = document.createElement("script");
@@ -97,7 +103,7 @@ async function loadPage(page, addToHistory = true) {
       oldScript.parentNode.replaceChild(newScript, oldScript);
     });
 
-    // 3. LOGIKA ANIMASI
+    // 5. ANIMASI
     const elementsToAnimate = app.querySelectorAll(
       "h1, h2, h3, p, .group, a.inline-flex, a.flex, .relative.z-10 > span, .grid > div"
     );
@@ -106,15 +112,14 @@ async function loadPage(page, addToHistory = true) {
       el.style.animationDelay = `${index * 50}ms`;
     });
 
-    // 4. Scroll ke atas
     window.scrollTo(0, 0);
 
-    // 5. HISTORY API
+    // 6. HISTORY API
     if (addToHistory) {
       history.pushState({ pageId: page }, null, `#${page}`);
     }
 
-    // 6. AUTO LOAD DATA QURAN
+    // 7. LOGIKA KHUSUS (QURAN)
     if (page === "baca-quran") {
       const activeJuz = localStorage.getItem("activeJuz");
       if (activeJuz) {
@@ -123,6 +128,7 @@ async function loadPage(page, addToHistory = true) {
         loadPage(MAIN_MENU_PAGE);
       }
     }
+
   } catch (error) {
     console.error("Load Page Error:", error);
     app.innerHTML = `
@@ -131,8 +137,9 @@ async function loadPage(page, addToHistory = true) {
             <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
         </div>
         <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">Halaman Tidak Ditemukan</h2>
-        <p class="text-sm text-gray-500 mb-6 max-w-md mx-auto font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">System Error: ${error.message}</p>
-        
+        <p class="text-sm text-gray-500 mb-6 max-w-md mx-auto font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded text-left text-xs overflow-auto">
+          ${error.message}
+        </p>
         <div class="flex gap-3">
             <button onclick="loadPage('${MAIN_MENU_PAGE}')" class="px-6 py-2 bg-brand text-white rounded-full hover:bg-brand-dark transition shadow-lg">
             Ke Menu Utama
