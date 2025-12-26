@@ -1,0 +1,134 @@
+<div class="pb-20 bg-brand-cream dark:bg-darkbg min-h-screen transition-colors duration-500">
+  <section class="pt-24 pb-12 px-4 text-center relative overflow-hidden">
+    <div class="absolute inset-0 bg-pattern opacity-10 dark:opacity-5"></div>
+    <div class="relative z-10">
+      <span class="text-brand font-bold tracking-[0.2em] uppercase text-xs mb-3 block font-serif">Pewaris Para Nabi</span>
+      <h1 class="text-4xl md:text-5xl font-serif font-black text-gray-900 dark:text-white mb-6">Imam Besar & Ilmuwan</h1>
+      <div class="flex items-center justify-center gap-2 mb-6">
+        <div class="h-px w-12 bg-brand/50"></div>
+        <div class="w-2 h-2 rounded-full bg-brand"></div>
+        <div class="h-px w-12 bg-brand/50"></div>
+      </div>
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-serif italic">"Ulama adalah pewaris para nabi..."</p>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4">
+    <h2 class="text-2xl font-serif font-bold text-brand-dark dark:text-brand mb-8 border-b-2 border-brand/20 pb-2 inline-block">4 Imam Mazhab</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      
+      <div onclick="loadPage('imam-ulama/syafii')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-xl cursor-pointer">
+        <div class="h-48 overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-70"></div>
+          <img src="assets/Imam Syafi.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+          <span class="absolute bottom-3 left-3 text-brand-light font-bold z-20 font-serif text-xl">Imam Syafi'i</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-gray-500 mb-2 uppercase tracking-wider">Muhammad bin Idris</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-4 leading-relaxed">Pendiri Mazhab Syafi'i yang banyak dianut di Indonesia.</p>
+        </div>
+      </div>
+
+      <div onclick="loadPage('imam-ulama/malik')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-xl cursor-pointer">
+        <div class="h-48 overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-70"></div>
+          <img src="assets/Imam malik.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+          <span class="absolute bottom-3 left-3 text-brand-light font-bold z-20 font-serif text-xl">Imam Malik</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-gray-500 mb-2 uppercase tracking-wider">Imam Darul Hijrah</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-4 leading-relaxed">Ulama besar Madinah dan penulis kitab Al-Muwatha'.</p>
+        </div>
+      </div>
+
+      <div onclick="loadPage('imam-ulama/hanafi')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-xl cursor-pointer">
+        <div class="h-48 overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-70"></div>
+          <img src="assets/Imam abu Hanifah.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+          <span class="absolute bottom-3 left-3 text-brand-light font-bold z-20 font-serif text-xl">Imam Hanafi</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-gray-500 mb-2 uppercase tracking-wider">Nu'man bin Tsabit</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-4 leading-relaxed">Pendiri Mazhab Hanafi. Dikenal dengan logika (ra'yu) yang tajam.</p>
+        </div>
+      </div>
+
+      <div onclick="loadPage('imam-ulama/hambali')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-xl cursor-pointer">
+        <div class="h-48 overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-70"></div>
+          <img src="assets/Iman Ahmad bin hanbal.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+          <span class="absolute bottom-3 left-3 text-brand-light font-bold z-20 font-serif text-xl">Imam Hambali</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-gray-500 mb-2 uppercase tracking-wider">Ahmad bin Hanbal</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-4 leading-relaxed">Murid Imam Syafi'i yang sangat teguh pendirian.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-serif font-bold text-brand-dark dark:text-brand mb-8 border-b-2 border-brand/20 pb-2 inline-block">Ahli Hadits & Ilmuwan</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <div onclick="loadPage('imam-ulama/bukhari')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer">
+        <div class="h-56 overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-80"></div>
+          <img src="assets/Imam bukhari.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 grayscale group-hover:grayscale-0" />
+          <span class="absolute bottom-4 left-4 text-brand-light font-black z-20 font-serif text-2xl">Imam Bukhari</span>
+        </div>
+        <div class="p-8">
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Amirul Mukminin fil Hadits. Penulis kitab Shahih Bukhari.</p>
+        </div>
+      </div>
+
+      <div onclick="loadPage('imam-ulama/ghazali')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer">
+        <div class="h-56 overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-80"></div>
+          <img src="assets/Imam Al-Ghazali.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 grayscale group-hover:grayscale-0" />
+          <span class="absolute bottom-4 left-4 text-brand-light font-black z-20 font-serif text-2xl">Imam Al-Ghazali</span>
+        </div>
+        <div class="p-8">
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Hujjatul Islam. Penulis Ihya Ulumuddin.</p>
+        </div>
+      </div>
+
+      <div onclick="loadPage('imam-ulama/ibnusina')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer">
+        <div class="h-56 overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-80"></div>
+          <img src="assets/Ibn sina.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 grayscale group-hover:grayscale-0" />
+          <span class="absolute bottom-4 left-4 text-brand-light font-black z-20 font-serif text-2xl">Ibnu Sina</span>
+        </div>
+        <div class="p-8">
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Bapak Kedokteran Modern.</p>
+        </div>
+      </div>
+
+      <div onclick="loadPage('imam-ulama/khawarizmi')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer">
+        <div class="h-56 overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-80"></div>
+          <img src="assets/Alkhawarizmi.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 grayscale group-hover:grayscale-0" />
+          <span class="absolute bottom-4 left-4 text-brand-light font-black z-20 font-serif text-2xl">Al-Khawarizmi</span>
+        </div>
+        <div class="p-8">
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Bapak Aljabar dan Algoritma.</p>
+        </div>
+      </div>
+
+      <div onclick="loadPage('imam-ulama/khaldun')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer">
+        <div class="h-56 overflow-hidden relative">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-80"></div>
+          <img src="assets/Ibn khaldun.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 grayscale group-hover:grayscale-0" />
+          <span class="absolute bottom-4 left-4 text-brand-light font-black z-20 font-serif text-2xl">Ibnu Khaldun</span>
+        </div>
+        <div class="p-8">
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Bapak Sosiologi dan Sejarah Modern.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="text-center mt-16 pb-10">
+    <a href="#" onclick="loadPage('home')" class="inline-flex items-center gap-3 px-8 py-3 border border-brand text-brand hover:bg-brand hover:text-white transition rounded-full font-serif font-bold tracking-wide">
+      <span>←</span> Kembali ke Beranda
+    </a>
+  </div>
+</div>

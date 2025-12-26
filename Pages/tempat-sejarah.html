@@ -1,0 +1,137 @@
+<div class="pb-20 bg-brand-cream dark:bg-darkbg min-h-screen transition-colors duration-500">
+  
+  <section class="pt-24 pb-12 px-4 text-center relative overflow-hidden">
+    <div class="absolute inset-0 bg-pattern opacity-10 dark:opacity-5"></div>
+    <div class="relative z-10">
+      <span class="text-brand font-bold tracking-[0.2em] uppercase text-xs mb-3 block font-serif">Saksi Bisu Peradaban</span>
+      <h1 class="text-4xl md:text-5xl font-serif font-black text-gray-900 dark:text-white mb-6">Tempat Bersejarah</h1>
+      <div class="flex items-center justify-center gap-2 mb-6">
+        <div class="h-px w-12 bg-brand/50"></div><div class="w-2 h-2 rounded-full bg-brand"></div><div class="h-px w-12 bg-brand/50"></div>
+      </div>
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-serif italic">"Dan apakah mereka tidak berjalan di muka bumi..."</p>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4">
+    
+    <h2 class="text-2xl font-serif font-bold text-brand-dark dark:text-brand mb-8 border-b-2 border-brand/20 pb-2 inline-block">3 Kota Suci Utama</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        
+        <div onclick="loadPage('tempat-sejarah/mekkah')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl cursor-pointer">
+            <div class="h-64 overflow-hidden relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-60"></div>
+                <img src="assets/Mekkah.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <span class="absolute bottom-4 left-4 text-white font-bold z-20 font-serif text-2xl drop-shadow-lg">Makkah Al-Mukarramah</span>
+            </div>
+            <div class="p-6">
+                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Pusat kiblat umat Islam sedunia.</p>
+            </div>
+        </div>
+
+        <div onclick="loadPage('tempat-sejarah/madinah')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl cursor-pointer">
+            <div class="h-64 overflow-hidden relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-60"></div>
+                <img src="assets/Madinah.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <span class="absolute bottom-4 left-4 text-white font-bold z-20 font-serif text-2xl drop-shadow-lg">Madinah Al-Munawwarah</span>
+            </div>
+            <div class="p-6">
+                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Kota tujuan hijrah dan pusat pemerintahan Islam.</p>
+            </div>
+        </div>
+
+        <div onclick="loadPage('tempat-sejarah/alaqsa')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl cursor-pointer">
+            <div class="h-64 overflow-hidden relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-60"></div>
+                <img src="assets/Al aqsa.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <span class="absolute bottom-4 left-4 text-white font-bold z-20 font-serif text-2xl drop-shadow-lg">Masjid Al-Aqsa</span>
+            </div>
+            <div class="p-6">
+                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Kiblat pertama umat Islam dan tempat persinggahan Isra Mi'raj.</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-2xl font-serif font-bold text-brand-dark dark:text-brand mb-8 border-b-2 border-brand/20 pb-2 inline-block">Jejak Kejayaan Peradaban</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <div onclick="loadPage('tempat-sejarah/alhambra')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl cursor-pointer">
+            <div class="h-56 overflow-hidden relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-60"></div>
+                <img src="assets/Alhambra spanyol.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <span class="absolute bottom-4 left-4 text-white font-bold z-20 font-serif text-xl drop-shadow-lg">Istana Alhambra</span>
+            </div>
+            <div class="p-6">
+                <span class="text-xs font-bold text-brand uppercase tracking-wider mb-2 block">Granada, Spanyol</span>
+                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Permata peradaban Islam di Eropa.</p>
+            </div>
+        </div>
+
+        <div onclick="loadPage('tempat-sejarah/baitulhikmah')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl cursor-pointer">
+            <div class="h-56 overflow-hidden relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-60"></div>
+                <img src="assets/Baghdad Baitul hikmah.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <span class="absolute bottom-4 left-4 text-white font-bold z-20 font-serif text-xl drop-shadow-lg">Baitul Hikmah</span>
+            </div>
+            <div class="p-6">
+                <span class="text-xs font-bold text-brand uppercase tracking-wider mb-2 block">Baghdad, Irak</span>
+                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Pusat ilmu pengetahuan dunia di masa Dinasti Abbasiyah.</p>
+            </div>
+        </div>
+
+        <div onclick="loadPage('tempat-sejarah/hagiasophia')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl cursor-pointer">
+            <div class="h-56 overflow-hidden relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-60"></div>
+                <img src="assets/Istanbul Hagia shopia.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <span class="absolute bottom-4 left-4 text-white font-bold z-20 font-serif text-xl drop-shadow-lg">Istanbul (Hagia Sophia)</span>
+            </div>
+            <div class="p-6">
+                <span class="text-xs font-bold text-brand uppercase tracking-wider mb-2 block">Turki</span>
+                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Kota dua benua yang ditaklukkan Muhammad Al-Fatih.</p>
+            </div>
+        </div>
+
+        <div onclick="loadPage('tempat-sejarah/alazhar')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl cursor-pointer">
+            <div class="h-56 overflow-hidden relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-60"></div>
+                <img src="assets/Cairo alazhar.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <span class="absolute bottom-4 left-4 text-white font-bold z-20 font-serif text-xl drop-shadow-lg">Universitas Al-Azhar</span>
+            </div>
+            <div class="p-6">
+                <span class="text-xs font-bold text-brand uppercase tracking-wider mb-2 block">Kairo, Mesir</span>
+                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Salah satu universitas tertua di dunia yang masih beroperasi.</p>
+            </div>
+        </div>
+
+        <div onclick="loadPage('tempat-sejarah/cordoba')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl cursor-pointer">
+            <div class="h-56 overflow-hidden relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-60"></div>
+                <img src="assets/Cordoba.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <span class="absolute bottom-4 left-4 text-white font-bold z-20 font-serif text-xl drop-shadow-lg">Masjid Cordoba</span>
+            </div>
+            <div class="p-6">
+                <span class="text-xs font-bold text-brand uppercase tracking-wider mb-2 block">Cordoba, Spanyol</span>
+                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Simbol keagungan arsitektur Islam di Barat.</p>
+            </div>
+        </div>
+
+        <div onclick="loadPage('tempat-sejarah/tajmahal')" class="group relative bg-white dark:bg-gray-900 border border-brand/20 dark:border-gray-800 rounded-xl overflow-hidden hover:border-brand transition duration-500 hover:shadow-2xl cursor-pointer">
+            <div class="h-56 overflow-hidden relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10 opacity-60"></div>
+                <img src="assets/Tajmahal.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <span class="absolute bottom-4 left-4 text-white font-bold z-20 font-serif text-xl drop-shadow-lg">Taj Mahal</span>
+            </div>
+            <div class="p-6">
+                <span class="text-xs font-bold text-brand uppercase tracking-wider mb-2 block">Agra, India</span>
+                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Mahakarya arsitektur Mughal.</p>
+            </div>
+        </div>
+
+    </div>
+  </section>
+
+  <div class="text-center mt-16 pb-10">
+    <a href="#" onclick="loadPage('home')" class="inline-flex items-center gap-3 px-8 py-3 border border-brand text-brand hover:bg-brand hover:text-white transition rounded-full font-serif font-bold tracking-wide">
+      <span>←</span> Kembali ke Beranda
+    </a>
+  </div>
+</div>

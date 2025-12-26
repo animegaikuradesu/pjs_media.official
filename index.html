@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PJS MEDIA | Pusat Sejarah Islam</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@500;700;900&display=swap" rel="stylesheet" />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              serif: ["Playfair Display", "serif"],
+            },
+            colors: {
+              brand: {
+                DEFAULT: "#B48E5D", // Emas Antik
+                dark: "#8C6A42", // Bronze Gelap
+                light: "#D4AF7A", // Emas Terang
+                cream: "#F4F1EA", // Kertas Tua
+              },
+              darkbg: "#121214",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* --- ANIMASI SMOOTH SATU PER SATU --- */
+      @keyframes slideUpFade {
+        from {
+          opacity: 0;
+          transform: translateY(40px); /* Jarak naik lebih jauh dikit biar kerasa */
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Class ini bikin elemen hilang dulu, nanti JS yang memicu animasinya */
+      .reveal-up {
+        opacity: 0; /* Wajib hidden di awal */
+        animation: slideUpFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      }
+
+      .bg-pattern {
+        background-image: radial-gradient(#b48e5d 0.7px, transparent 0.7px);
+        background-size: 24px 24px;
+      }
+    </style>
+  </head>
+  <body class="bg-brand-cream text-gray-800 dark:bg-darkbg dark:text-gray-200 transition-colors duration-300 min-h-screen flex flex-col font-sans">
+    <header class="fixed w-full top-0 z-50 bg-white/95 dark:bg-darkbg/95 backdrop-blur-md border-b border-brand/20 dark:border-gray-800 transition-colors duration-300 shadow-sm">
+      <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+        <a href="#" onclick="loadPage('home')" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-brand shadow-md group-hover:border-brand-dark transition">
+            <img src="assets/Logo.png" alt="Logo PJS" class="w-full h-full object-cover" />
+          </div>
+          <div class="flex flex-col">
+            <span class="text-xl font-serif font-extrabold text-gray-900 dark:text-brand-light tracking-wide leading-none group-hover:text-brand transition">PJS MEDIA</span>
+            <span class="text-[10px] text-brand font-bold tracking-[0.2em] uppercase mt-1">Pengen Jadi Sholih</span>
+          </div>
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-8 font-medium text-sm uppercase tracking-wider">
+          <a href="#" onclick="loadPage('home')" class="hover:text-brand transition border-b-2 border-transparent hover:border-brand py-1">Beranda</a>
+          <a href="#" onclick="loadPage('nabi')" class="hover:text-brand transition border-b-2 border-transparent hover:border-brand py-1">Kisah Nabi</a>
+          <a href="#" onclick="loadPage('para-pemimpin')" class="hover:text-brand transition border-b-2 border-transparent hover:border-brand py-1">Tokoh Islam</a>
+          <a href="#" onclick="loadPage('tempat-sejarah')" class="hover:text-brand transition border-b-2 border-transparent hover:border-brand py-1">Tempat Sejarah</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <button id="theme-toggle" class="p-2 rounded-full hover:bg-brand/10 dark:hover:bg-gray-800 text-gray-600 dark:text-brand transition">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+              />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.75 9.75 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+              />
+            </svg>
+          </button>
+
+          <a
+            href="https://www.instagram.com/pjs.media/"
+            target="_blank"
+            class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-brand-dark to-brand text-white px-6 py-2.5 rounded-full font-serif font-bold text-sm transition shadow-md hover:shadow-brand/30 hover:scale-[1.02] active:scale-95"
+          >
+            <img src="assets/ig.jpeg" alt="Instagram" class="w-4 h-4 object-contain rounded" />
+            Instagram
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="app" class="flex-grow pt-20"></main>
+
+    <footer class="bg-white dark:bg-black border-t-2 border-brand/30 dark:border-brand-dark/50 pt-16 pb-10 mt-auto">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
+          <div class="text-center md:text-left">
+            <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+              <img src="assets/Logo.png" alt="Logo PJS" class="w-10 h-10 rounded-full border border-brand" />
+              <h3 class="text-2xl font-serif font-black text-gray-900 dark:text-brand-light">PJS MEDIA</h3>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 max-w-xs leading-relaxed">Menggali kembali kejayaan masa lalu sebagai pelajaran untuk masa depan yang lebih sholih.</p>
+          </div>
+          <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-bold text-gray-700 dark:text-brand font-serif uppercase tracking-wider">
+            <a href="#" onclick="loadPage('tentang-kami')" class="hover:text-brand-dark transition">Tentang Kami</a>
+            <a href="#" onclick="loadPage('kerjasama')" class="hover:text-brand-dark transition">Kerjasama</a>
+            <a href="#" onclick="loadPage('donasi')" class="hover:text-brand-dark transition">Donasi Dakwah</a>
+          </div>
+        </div>
+        <div class="border-t border-gray-100 dark:border-gray-800 pt-8 text-center">
+          <p class="text-xs text-gray-500 dark:text-gray-500 font-medium">© 2025 PJS MEDIA. Dibuat dengan niat tulus untuk umat.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<div class="min-h-screen bg-brand-cream dark:bg-darkbg py-24 px-4 transition-colors duration-500">
+    <div class="container mx-auto max-w-4xl">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8 border-b border-brand/20 pb-6">
+            <button onclick="loadPage('alquran')" class="flex items-center gap-2 text-sm text-gray-500 hover:text-brand transition">
+                <span>&larr;</span> Kembali ke Daftar Juz
+            </button>
+            <h2 id="judul-juz" class="text-2xl font-serif font-bold text-brand">Memuat Juz...</h2>
+            <div class="w-10"></div> <!-- Spacer biar tengah -->
+        </div>
+
+        <!-- Container Ayat (Akan diisi otomatis oleh Script) -->
+        <div id="quran-container" class="space-y-8">
+            <!-- Loading State -->
+            <div class="flex flex-col items-center justify-center py-20">
+                <div class="animate-spin w-12 h-12 border-4 border-brand border-t-transparent rounded-full"></div>
+                <p class="mt-4 text-brand font-serif italic">Sedang mengambil ayat-ayat suci...</p>
+            </div>
+        </div>
+
+        <!-- Navigasi Bawah -->
+        <div class="mt-12 text-center border-t border-brand/20 pt-8">
+            <button onclick="window.scrollTo(0,0)" class="text-sm text-gray-400 hover:text-brand transition">
+                &uarr; Kembali ke Atas
+            </button>
+        </div>
+    </div>
+</div>

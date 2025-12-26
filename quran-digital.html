@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Quran Digital PJS</title>
+    
+    <!-- React Framework -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: "#B48E5D", 
+                            dark: "#8C6A42",
+                            light: "#D4AF7A", 
+                            cream: "#F4F1EA", 
+                        },
+                        darkbg: "#121214",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                        serif: ["Playfair Display", "serif"],
+                        arabic: ["Amiri", "serif"],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #D4AF7A; border-radius: 10px; }
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #B48E5D;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-brand-cream text-gray-800 transition-colors duration-300">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- ICONS ---
+        const Icon = ({ name, size = 20, className = "" }) => {
+            useEffect(() => { lucide.createIcons(); }, [name]);
+            return <i data-lucide={name} width={size} height={size} className={className}></i>;
+        };
+
+        // --- HEADER COMPONENT ---
+        const Header = ({ onSearch, isDetail, onBack, surahName }) => (
+            <div className="bg-white/95 backdrop-blur-md border-b border-brand/20 sticky top-0 z-50 px-4 h-16 flex items-center justify-between shadow-sm">
+                <div className="flex items-center gap-3">
+                    {isDetail ? (
+                        <button onClick={onBack} className="p-2 hover:bg-brand-cream rounded-full transition text-brand-dark">
+                            <Icon name="arrow-left" />
+                        </button>
+                    ) : (
+                        <div className="w-10 h-10 bg-brand text-white rounded-lg flex items-center justify-center font-serif font-bold text-xl shadow-lg shadow-brand/30">
+                            Q
+                        </div>
+                    )}
+                    
+                    <div>
+                        <h1 className="font-serif font-bold text-lg text-gray-900 leading-none">
+                            {isDetail ? surahName : "Al-Quran Digital"}
+                        </h1>
+                        <p className="text-[10px] text-brand uppercase tracking-widest font-bold mt-1">
+                            {isDetail ? "Terjemahan & Tafsir" : "Mushaf 30 Juz"}
+                        </p>
+                    </div>
+                </div>
+
+                {!isDetail && (
+                    <div className="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Cari Surat..." 
+                            onChange={(e) => onSearch(e.target.value)}
+                            className="bg-brand-cream text-brand-dark placeholder-brand/50 border border-brand/10 rounded-full py-2 pl-4 pr-10 focus:ring-2 focus:ring-brand/50 outline-none text-sm w-40 md:w-64 transition-all"
+                        />
+                        <div className="absolute right-3 top-2.5 text-brand/50">
+                            <Icon name="search" size={16} />
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+
+        // --- SURAH LIST COMPONENT ---
+        const SurahList = ({ surahs, onSelect }) => {
+            if (surahs.length === 0) return <div className="text-center py-20 opacity-50 font-serif italic">Surat tidak ditemukan...</div>;
+
+            return (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-w-6xl mx-auto">
+                    {surahs.map((surah) => (
+                        <div 
+                            key={surah.number} 
+                            onClick={() => onSelect(surah)}
+                            className="bg-white p-5 rounded-xl border border-brand/10 hover:border-brand/50 hover:shadow-lg hover:shadow-brand/5 transition-all cursor-pointer group flex items-center justify-between relative overflow-hidden"
+                        >
+                            <div className="absolute top-0 right-0 w-16 h-16 bg-brand-cream rounded-bl-full -mr-8 -mt-8 z-0 group-hover:bg-brand/10 transition"></div>
+                            
+                            <div className="flex items-center gap-4 relative z-10">
+                                <div className="w-12 h-12 relative flex items-center justify-center">
+                                    <div className="absolute inset-0 border-2 border-brand/30 rotate-45 rounded-lg group-hover:rotate-90 transition duration-500"></div>
+                                    <span className="font-serif font-bold text-brand-dark">{surah.number}</span>
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-gray-800 group-hover:text-brand transition font-serif text-lg">{surah.englishName}</h3>
+                                    <p className="text-xs text-gray-500 font-medium">{surah.englishNameTranslation}</p>
+                                </div>
+                            </div>
+                            
+                            <div className="text-right relative z-10">
+                                <span className="font-arabic text-2xl text-brand-dark mb-1 block">{surah.name}</span>
+                                <span className="text-[10px] uppercase font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{surah.numberOfAyahs} Ayat</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            );
+        };
+
+        // --- DETAIL SURAH COMPONENT ---
+        const SurahDetail = ({ surah, onBack }) => {
+            const [data, setData] = useState(null);
+            const [loading, setLoading] = useState(true);
+            const [audio, setAudio] = useState(null);
+            const [isPlaying, setIsPlaying] = useState(false);
+
+            useEffect(() => {
+                const fetchData = async () => {
+                    try {
+                        // Fetch Arab & Indo
+                        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani,id.indonesian`);
+                        const result = await res.json();
+                        
+                        if(result.code === 200) {
+                            const arabic = result.data[0];
+                            const indo = result.data[1];
+                            const combined = arabic.ayahs.map((ayah, i) => ({
+                                ...ayah,
+                                translation: indo.ayahs[i].text
+                            }));
+                            setData({ ...arabic, ayahs: combined });
+                        }
+                    } catch (e) { console.error(e); } finally { setLoading(false); }
+                };
+                fetchData();
+
+                // Setup Audio
+                const audioUrl = `https://server8.mp3quran.net/afs/${String(surah.number).padStart(3, '0')}.mp3`;
+                const newAudio = new Audio(audioUrl);
+                newAudio.onended = () => setIsPlaying(false);
+                setAudio(newAudio);
+
+                return () => { if(newAudio) newAudio.pause(); }
+            }, [surah]);
+
+            const togglePlay = () => {
+                if(!audio) return;
+                if(isPlaying) audio.pause();
+                else audio.play();
+                setIsPlaying(!isPlaying);
+            };
+
+            if (loading) return <div className="h-[80vh] flex items-center justify-center"><div className="loader"></div></div>;
+
+            return (
+                <div className="max-w-4xl mx-auto px-4 py-6 pb-24">
+                    {/* Hero Card */}
+                    <div className="bg-gradient-to-br from-brand-dark to-brand rounded-2xl p-8 text-white text-center shadow-xl mb-10 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')] opacity-10"></div>
+                        <div className="relative z-10">
+                            <h2 className="text-4xl font-serif font-bold mb-2">{surah.englishName}</h2>
+                            <p className="text-brand-cream/80 text-sm mb-6 uppercase tracking-widest">{surah.englishNameTranslation} • {surah.revelationType}</p>
+                            
+                            <button 
+                                onClick={togglePlay}
+                                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-8 py-3 flex items-center gap-3 transition mx-auto group"
+                            >
+                                <Icon name={isPlaying ? "pause" : "play"} size={20} className="text-white fill-current" />
+                                <span className="font-bold text-sm tracking-wide group-hover:text-brand-cream">{isPlaying ? "Jeda Murottal" : "Putar Murottal"}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Bismillah */}
+                    {surah.number !== 9 && (
+                        <div className="text-center mb-12">
+                            <div className="font-arabic text-3xl text-brand-dark">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+                        </div>
+                    )}
+
+                    {/* Ayat List */}
+                    <div className="space-y-8">
+                        {data.ayahs.map((ayah) => (
+                            <div key={ayah.number} className="border-b border-brand/10 pb-8 last:border-0">
+                                <div className="flex justify-between items-center mb-6">
+                                    <span className="bg-brand-cream text-brand-dark font-bold text-xs px-3 py-1 rounded-full border border-brand/10">
+                                        Ayat {ayah.numberInSurah}
+                                    </span>
+                                    <div className="flex gap-4 opacity-50">
+                                        <Icon name="share-2" size={16} className="cursor-pointer hover:text-brand" />
+                                        <Icon name="bookmark" size={16} className="cursor-pointer hover:text-brand" />
+                                    </div>
+                                </div>
+                                
+                                <p className="font-arabic text-right text-3xl md:text-4xl text-gray-800 mb-6 leading-[2.5] dir-rtl">
+                                    {ayah.text}
+                                </p>
+                                
+                                <p className="text-gray-600 font-sans text-base leading-relaxed">
+                                    {ayah.translation}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        // --- APP MAIN ---
+        const App = () => {
+            const [surahs, setSurahs] = useState([]);
+            const [filtered, setFiltered] = useState([]);
+            const [selected, setSelected] = useState(null);
+
+            useEffect(() => {
+                fetch('https://api.alquran.cloud/v1/surah')
+                    .then(res => res.json())
+                    .then(data => {
+                        setSurahs(data.data);
+                        setFiltered(data.data);
+                    });
+            }, []);
+
+            const handleSearch = (q) => {
+                const term = q.toLowerCase();
+                setFiltered(surahs.filter(s => 
+                    s.englishName.toLowerCase().includes(term) || 
+                    s.englishNameTranslation.toLowerCase().includes(term)
+                ));
+            };
+
+            return (
+                <div className="min-h-screen">
+                    <Header 
+                        onSearch={handleSearch} 
+                        isDetail={!!selected} 
+                        surahName={selected?.englishName} 
+                        onBack={() => setSelected(null)}
+                    />
+                    
+                    {selected ? (
+                        <SurahDetail surah={selected} />
+                    ) : (
+                        <SurahList surahs={filtered} onSelect={setSelected} />
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
